@@ -1,0 +1,70 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Lobby</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_screen.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tiles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/number_tokens.css') }}">
+    <!-- Include the latest jquery from cdn -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div id="login-screen">
+        <div id="sign-in">
+            <input type="text" id="catan-game-username" placeholder="Enter your username"
+                oninput="disableSignInButton()" style="margin: 10px;">
+            <br>
+            <button id="sign-in-btn" onclick="signIn()" disabled>Sign In</button>
+            <button id="sign-out-btn" class="mantine-Button-root" onclick="signOut()" disabled>Sign Out</button>
+        </div>
+
+        <div id="create-game" id="create-game" style="display: none;">
+            <button onclick="createGame()" id="create-btn" disabled>Create Game</button>
+        </div>
+
+        <div id="game-list" id="game-list"
+            style="margin: 10px; display: none; border-radius: 5%; border: 1px solid black; background-color:  rgb(252, 250, 250);">
+            <h4>Game List</h4>
+            <ul id="games">
+                <!-- Game list will be populated here -->
+            </ul>
+        </div>
+
+    </div>
+
+    <div id="create-game-screen" style="display: none;">
+        <button onclick="backToLogin()" id="back-btn" className="back-btn">Back</button>
+        <h2>Create New Game</h2>
+        <input type="text" id="game-name" placeholder="Enter game name">
+        <br>
+        <h2>Proposed Map</h2>
+        <button onclick="createGame()">Regenrate Random</button>
+        <div id="proposed-map-text">Drag and drop tiles to create your map</div>
+        <!-- this "create-game-map" div should be in the very centre of the screen -->
+        <div id="create-game-map" style="display: flex; justify-content: center; align-items: center;"></div>
+        <button id="create-game-accept-btn">Accept Map</button>
+    </div>
+
+    <div id="game-screen" style="display: none;">
+        <h2 id="game-name"></h2>
+        <div id="game-board"></div>
+    </div>
+
+    <script>
+        const socket = io('http://localhost:5000'); // Update with your server URL
+    </script>
+    <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/login_screen.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/create_game.js') }}"></script>
+
+</body>
+
+</html>

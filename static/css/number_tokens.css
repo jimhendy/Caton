@@ -1,0 +1,63 @@
+.number-token {
+    /* A circular token with a number in the centre and a number of dots below the number */
+    border-radius: 50%;
+    background-color: rgb(211, 172, 56);
+    color: rgb(0, 0, 0);
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+    width: 4vw;
+    height: 4vw;
+    white-space: pre;
+    line-height: 0.4;
+}
+
+.number-token-2::before {
+    content: "2\A.";
+}
+
+.number-token-3::before {
+    content: "3\A..";
+}
+
+.number-token-4::before {
+    content: "4\A...";
+}
+
+.number-token-5::before {
+    content: "5\A....";
+}
+
+.number-token-6::before {
+    content: "6\A.....";
+    color: red;
+    font-size: 1.5em;
+}
+
+.number-token-8::before {
+    content: "8\A.....";
+    color: red;
+    font-size: 1.5em;
+}
+
+.number-token-9::before {
+    content: "9\A....";
+}
+
+.number-token-10::before {
+    content: "10\A...";
+}
+
+.number-token-11::before {
+    content: "11\A..";
+}
+
+.number-token-12::before {
+    content: "12\A.";
+}

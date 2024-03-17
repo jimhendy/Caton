@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "pythononlinegame"
+version = "0.1.0"
+description = "Example online multi-player game with python backend"
+authors = ["jimhendy88 <jimhendy88@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask-socketio = "^5.3.6"
+flask-cors = "^4.0.0"
+loguru = "^0.7.2"
+pydantic = "^2.6.4"
+
+[tool.poetry.group.dev.dependencies]
+131228_pytest_1 = "^1.0.0"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
