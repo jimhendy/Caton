@@ -5,7 +5,7 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit, join_room, leave_room, send
 from loguru import logger
 
-from caton import generate_random_number_tokens, generate_random_terrains
+from caton import generate_random_terrains
 
 players = {}
 games = {}
@@ -124,11 +124,11 @@ def handle_propose_map():
     emit("map_proposed", board)
 
 
-@socketio.on("accept_proposed_map")
-def handle_accept_map(board):
-    print(board)
-    counters = generate_random_number_tokens()
-    emit("counters_proposed", counters)
+# @socketio.on("accept_proposed_map")
+# def handle_accept_map(board):
+#     print(board)
+#     counters = generate_random_number_tokens()
+#     emit("counters_proposed", counters)
 
 
 if __name__ == "__main__":

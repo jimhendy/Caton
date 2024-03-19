@@ -1,5 +1,4 @@
-function tile_dimensions() {
-    const tile_class = "tile";
+function tile_dimensions(tile_class) {
     const tile_class_dot = "." + tile_class;
     
     let width = $(tile_class_dot).width();

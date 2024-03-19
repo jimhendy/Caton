@@ -9,7 +9,7 @@ socket.on("map_proposed", (data) => {
     map_div.style.justifyContent = "center";
     map_div.style.backgroundColor = 'white'
 
-    const tile_size = tile_dimensions()
+    const tile_size = tile_dimensions("tile")
     map_div.style.marginTop = - 2 * tile_size.marginTop + "px";
     map_div.style.marginBottom = - 2 * tile_size.marginBottom + "px";
     var tile_counter = 0;

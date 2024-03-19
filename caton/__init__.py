@@ -32,15 +32,39 @@ FIELDS = Terrain(name="Fields", resource=GRAIN)
 FOREST = Terrain(name="Forest", resource=WOOD)
 PASTURE = Terrain(name="Pasture", resource=WOOL)
 DESERT = Terrain(name="Desert", resource=NOTHING)
+WATER = Terrain(name="Water", resource=NOTHING)
+
+class NumberToken(Model):
+    value: int | None
+
+class HexLocation(Model):
+    # https://www.redblobgames.com/grids/hexagons/
+    q: int
+    r: int
+    s: int
+
+    def __post_init__(self):
+        if self.q + self.r + self.s != 0:
+            raise ValueError(f"{self.q=} + {self.r=} + {self.s=} = {self.q+self.r+self.s} != 0")
+
+    @classmethod
+    def from_x_y(cls, x: int, y: int) -> "HexLocation":
+        return cls(q=x-y, r=y, s=-x)
+
+class Hex(Model):
+    terrain: Terrain
+    number_token: NumberToken
+    location: HexLocation
+
+class Harbour(Model):
+    resource: Resource
+
+class BoardLayout(Model):
+    n_players: int = 4
+    hexes: list[Hex]
 
 
-class UnderlyingBoard(Model):
-    terrain: list[list[Terrain]]
-    number_tokens: list[list[int | None]]
-    n_hexes_top_row: ClassVar[int] = 3
-
-
-def _hexes_by_players(n_players: int) -> int:
+def _terrains_by_player(n_players: int) -> int:
     if n_players < 1:
         raise ValueError(f"{n_players=} must be at least 1")
     if n_players < 5:
@@ -106,11 +130,16 @@ def _split_list_to_board(data: list, n_players: int) -> list[list]:
         board.append(data[start:end])
     return board
 
+def generate_random_board_layout(n_players: int = 4) -> BoardLayout:
+    terrains = generate_random_terrains(n_players)
+    hexes = _generate_hexes_from_terrains(n_players, terrains)
+    return BoardLayout(n_players=n_players, hexes=hexes)
+
 
 def generate_random_terrains(
     n_players: int = 4, *, serialised: bool = False
 ) -> list[list[Terrain]]:
-    hexes = [hex for hex, n in _hexes_by_players(n_players) for _ in range(n)]
+    hexes = [hex for hex, n in _terrains_by_player(n_players) for _ in range(n)]
     random.shuffle(hexes)
     result = _split_list_to_board(hexes, n_players)
     if serialised:
@@ -118,7 +147,16 @@ def generate_random_terrains(
     return result
 
 
-def generate_random_number_tokens(n_players: int = 4) -> list[list[int]]:
-    counters = _counters_by_players(n_players)
-    random.shuffle(counters)
-    return _split_list_to_board(counters, n_players)
+def _generate_hexes_from_terrains(n_players: int, terrains: list[list[Terrain]]) -> list[Hex]:
+    number_tokens = _counters_by_players(n_players)
+    random.shuffle(number_tokens)
+    hexes = []
+    for y, row in enumerate(terrains):
+        for x, terrain in enumerate(row):
+            if terrain.resource == NOTHING:
+                token = None
+            else:
+                token = number_tokens.pop()
+            hex = Hex(terrain=terrain, location=HexLocation.from_x_y(x, y), number_token=NumberToken(token))
+            hexes.append(hex)
+    return hexes

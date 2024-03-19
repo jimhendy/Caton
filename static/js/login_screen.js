@@ -82,7 +82,7 @@ function tile_background() {
     var window_height = window.innerHeight;
     var window_width = window.innerWidth;
     
-    const tile_size = tile_dimensions();
+    const tile_size = tile_dimensions("outline-tile");
     var current_height = - tile_size.height / 2;
     var row_num = 0
 
@@ -101,7 +101,9 @@ function tile_background() {
             canvas.appendChild(tile);
             current_width += tile_size.width;
         }
-        current_height += tile_size.height + tile_size.marginTop + tile_size.marginBottom;
+        console.log(tile_size)
+        current_height += tile_size.width * Math.sqrt(3) / 2;
+        //tile_size.height + tile_size.marginTop + tile_size.marginBottom;
         row_num += 1
     }
     tiles = document.querySelectorAll('.canvas-tile');
@@ -119,4 +121,4 @@ setInterval(() => {
     setTimeout(() => {
         tile.style.backgroundColor = "white";
     }, 7000);
-}, 1000);
+}, 100);
